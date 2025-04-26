@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
+import '../enums/symptom.dart'; // Assuming Symptom enum is in a separate file
 
 class User with ChangeNotifier {
   String _selectedFlow = '';
-  final List<String> _selectedSymptoms = [];
+  final List<Symptom> _selectedSymptoms = [];
 
+  // Getters
   String get selectedFlow => _selectedFlow;
-  List<String> get selectedSymptoms => _selectedSymptoms;
+  List<Symptom> get selectedSymptoms => List<Symptom>.from(_selectedSymptoms);
 
+  // Set flow intensity
   void setFlow(String flow) {
     _selectedFlow = flow;
     notifyListeners();
   }
 
-  void toggleSymptom(String symptom) {
+  // Toggle symptoms using Symptom enum
+  void toggleSymptom(Symptom symptom) {
     if (_selectedSymptoms.contains(symptom)) {
       _selectedSymptoms.remove(symptom);
     } else {

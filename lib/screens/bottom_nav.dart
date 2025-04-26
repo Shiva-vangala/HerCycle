@@ -4,6 +4,7 @@ import 'cycle_screen.dart';
 import 'wellness_screen.dart';
 import 'shop_screen.dart';
 import 'profile_screen.dart';
+import 'top_nav.dart';
 import '../theme/app_colors.dart';
 
 class BottomNav extends StatefulWidget {
@@ -30,9 +31,19 @@ class _BottomNavState extends State<BottomNav> {
     });
   }
 
+  void _updateTab(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isSmallScreen = MediaQuery.of(context).size.width < 600;
+
     return Scaffold(
+      appBar: TopNav(onTabSelected: _updateTab), // Pass the callback to TopNav
+      drawer: isSmallScreen ? const TopNavDrawer() : null,
       body: _screens[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: const [
@@ -49,7 +60,7 @@ class _BottomNavState extends State<BottomNav> {
             label: 'Wellness',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopify),
+            icon: Icon(Icons.shopping_cart),
             label: 'Shop',
           ),
           BottomNavigationBarItem(
@@ -59,8 +70,26 @@ class _BottomNavState extends State<BottomNav> {
         ],
         currentIndex: _selectedIndex,
         selectedItemColor: AppColors.deepPlum,
-        unselectedItemColor: Colors.grey,
+        unselectedItemColor: Colors.grey[600],
         backgroundColor: AppColors.pearlWhite,
+        selectedLabelStyle: TextStyle(
+          fontFamily: 'Serif',
+          fontSize: isSmallScreen ? 12 : 14,
+          fontWeight: FontWeight.w600,
+        ),
+        unselectedLabelStyle: TextStyle(
+          fontFamily: 'Serif',
+          fontSize: isSmallScreen ? 11 : 12,
+          fontWeight: FontWeight.w400,
+        ),
+        type: BottomNavigationBarType.fixed,
+        elevation: 8,
+        selectedIconTheme: IconThemeData(
+          size: isSmallScreen ? 24 : 28,
+        ),
+        unselectedIconTheme: IconThemeData(
+          size: isSmallScreen ? 20 : 24,
+        ),
         onTap: _onItemTapped,
       ),
     );
